@@ -1,31 +1,12 @@
-# from flask import Flask, jsonify
-#
-# app = Flask(__name__)
+from flask import Flask, json
 
-# tasks = [
-#     {
-#         'id': 1,
-#         'title': u'title1',
-#         'description': u'artifact1',
-#         'done': False
-#     },
-#     {
-#         'id': 2,
-#         'title': u'title2',
-#         'description': u'artifact2',
-#         'done': False
-#     }
-# ]
-#
-#
-# def get_tasks():
-#     return jsonify({'tasks': tasks})
+companies = [{"id": 1, "name": "Company One"}, {"id": 2, "name": "Company Two"}]
 
+api = Flask(__name__)
 
-def main():
-    print("Hello")
-
+@api.route('/companies', methods=['GET'])
+def get_companies():
+  return json.dumps(companies)
 
 if __name__ == '__main__':
-    main()
-    # app.run(debug=True)
+    api.run()
