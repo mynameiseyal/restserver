@@ -10,3 +10,4 @@ def get_companies():
 
 if __name__ == '__main__':
     api.run()
+    .listen(process.env.PORT | | 5000)
