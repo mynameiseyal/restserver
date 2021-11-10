@@ -1,19 +1,9 @@
-from flask import Flask, json
+from rest_routes import app
 
-companies = [{"id": 1, "name": "Company One"}, {"id": 2, "name": "Company Two"}]
-
-app = Flask(__name__)
-
-
-@app.route('/', methods=['GET'])
-def home():
-    return "<h1>You've reached home</h1><p>This is a rest API server for Au10tix</p>"
-
-
-@app.route('/companies', methods=['GET'])
-def get_companies():
-  return json.dumps(companies)
-
+"""
+This is a simple rest API server, deployed using herokuapp.com
+Base URL: https://au10restserver.herokuapp.com/
+"""
 
 if __name__ == '__main__':
     app.run()
