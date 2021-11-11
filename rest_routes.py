@@ -39,7 +39,7 @@ def api_id():
     return jsonify(results)
 
 
-@app.route('/api/add_message/<uuid>', methods=['GET', 'POST'])
-def add_message(uuid):
+@app.route('/api/process/', methods=['GET', 'POST'])
+def add_message():
     content = request.get_json()
     return content
