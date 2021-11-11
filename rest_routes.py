@@ -33,7 +33,7 @@ def api_id():
 
     results = []
     for resp in responses:
-        if resp['id'] == req_id:
+        if resp['serial'] == req_id:
             results.append(resp)
 
     return jsonify(results)
