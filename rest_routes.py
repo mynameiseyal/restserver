@@ -42,5 +42,9 @@ def api_id():
 @app.route('/api/responses', methods=['GET', 'POST'])
 def add_message():
     content = request.get_json()
-    return f"JSON value sent: {content}"
+    if content['serial'] == 1:
+        return f"JSON value sent: {content}"
+    else:
+        return f"else"
+
 
