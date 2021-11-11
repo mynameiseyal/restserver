@@ -39,7 +39,8 @@ def api_id():
     return jsonify(results)
 
 
-@app.route('/api/process/', methods=['GET', 'POST'])
-def add_message():
-    content = request.get_json()
-    return content
+@app.route("/test", methods=["GET"])
+def starting_url():
+    json_data = request.json
+    a_value = json_data["a_key"]
+    return "JSON value sent: " + a_value
