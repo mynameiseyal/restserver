@@ -26,8 +26,8 @@ def api_id():
     Checks if the args contains an id of the response
     :return: response according to id or error message
     """
-    if 'id' in request.args:
-        req_id = int(request.args['id'])
+    if 'serial' in request.args:
+        req_id = int(request.args['serial'])
     else:
         return "Error, check your code"
 
