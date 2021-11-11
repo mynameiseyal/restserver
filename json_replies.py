@@ -1,60 +1,42 @@
-
-
 responses = [
     {
-        "message": [
-            {
-                "subset": [
-                    {
-                        "general": [
-                            {
-                                "information": [
-                                    {
-                                        "fname": "fname1",
-                                        "lname": "lname1"
-                                    }
-                                ],
-                                "quantities": [
-                                    {
-                                        "min": "1.40",
-                                        "mid": "30.4",
-                                        "max": "90"
-                                    }
-                                ]
-                            }
-                        ]
+        "message": {
+            "subset": [
+                {
+                    "general": {
+                        "information": {
+                            "date": "1-1-2021",
+                            "version": "1.00"
+                        },
+                        "quantities": {
+                            "first": "1.40",
+                            "second": "104.4",
+                            "third": "90"
+                        }
                     }
-                ]
-            }
-        ],
+                }
+            ]
+        },
         "serial": 1
     },
     {
-        "message": [
-            {
-                "subset": [
-                    {
-                        "general": [
-                            {
-                                "information": [
-                                    {
-                                        "fname": "fname2",
-                                        "lname": "lname2"
-                                    }
-                                ],
-                                "quantities": [
-                                    {
-                                        "min": "0.1",
-                                        "mid": "90.7",
-                                        "max": "200"
-                                    }
-                                ]
-                            }
-                        ]
+        "message": {
+            "subset": [
+                {
+                    "general": {
+                        "information": {
+                            "date": "1-1-2021",
+                            "version": "1.00"
+                        },
+                        "quantities": {
+                            "first": "203.70",
+                            "second": "104.3",
+                            "third": "150"
+                        }
                     }
-                ]
-            }
-        ],
+                }
+            ]
+        },
         "serial": 2
-    },
+    }
 ]

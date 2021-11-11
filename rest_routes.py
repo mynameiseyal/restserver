@@ -1,3 +1,6 @@
+import json
+from types import SimpleNamespace
+
 from flask import Flask, request, jsonify
 from json_replies import responses
 
@@ -40,11 +43,23 @@ def api_id():
 
 
 @app.route('/api/responses', methods=['GET', 'POST'])
-def add_message():
+def process_responses():
+    """
+    Gets a rest API call containing a JSON.
+    Expected JSON: {"message": {"subset":[{"general":{
+                    "information": {"date": "1-2-2021","version": "3.00"},
+                    "quantities": {"first": "203.70","second": "104.4","third": "150"}}}]},
+                    "serial": 3}
+    :return: Correct if right, Incorrect if not
+    """
     content = request.get_json()
-    if content['serial'] == 1:
-        return f"JSON value sent: {content}"
-    else:
-        return f"else"
-
-
+    parsed = json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
+    if parsed.serial == 3:
+        if parsed.message.subset[0].general.information.date == '1-2-2021':
+            if parsed.message.subset[0].general.information.version == '3.00':
+                if parsed.message.subset[0].general.quantities.first == '203.70':
+                    if parsed.message.subset[0].general.quantities.second == '104.4':
+                        if parsed.message.subset[0].general.quantities.third == '150':
+                            return "Correct"
+                        else:
+                            return "Incorrect"
