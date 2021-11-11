@@ -42,7 +42,7 @@ def api_id():
     return jsonify(results)
 
 
-@app.route('/api/responses', methods=['GET', 'POST'])
+@app.route('/api/process', methods=['GET', 'POST'])
 def process_responses():
     """
     Gets a rest API call containing a JSON.
