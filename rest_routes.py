@@ -53,7 +53,7 @@ def process_responses():
     :return: Correct if right, Incorrect if not
     """
     content = request.get_json()
-    parsed = json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
+    parsed = json.loads(json.dumps(content), object_hook=lambda d: SimpleNamespace(**d))
     print(content)
     if parsed.serial == 3:
         if content['message']['subset'][0]['general']['information']['date'] == '1-2-2021':
