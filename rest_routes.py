@@ -55,11 +55,11 @@ def process_responses():
     content = request.get_json()
     # parsed = json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
     if content['serial'] == 3:
-        if content['message.subset'][0]['general']['information']['date'] == '1-2-2021':
-            if content['message.subset'][0]['general']['information']['version'] == '3.00':
-                if content['message.subset'][0]['general']['quantities']['first'] == '203.70':
-                    if content['message.subset'][0]['general']['quantities']['second'] == '104.4':
-                        if content['message.subset'][0]['general']['quantities']['third'] == '150':
+        if content['message']['subset'][0]['general']['information']['date'] == '1-2-2021':
+            if content['message']['subset'][0]['general']['information']['version'] == '3.00':
+                if content['message']['subset'][0]['general']['quantities']['first'] == '203.70':
+                    if content['message']['subset'][0]['general']['quantities']['second'] == '104.4':
+                        if content['message']['subset'][0]['general']['quantities']['third'] == '150':
                             return "Correct"
                         else:
                             return "Incorrect"
