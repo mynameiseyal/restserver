@@ -52,8 +52,8 @@ def process_responses():
                     "serial": 3}
     :return: Correct if right, Incorrect if not
     """
-    content = request.json()
-    # parsed = json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
+    content = request.get_json()
+    print(content)
     if content['serial'] == 3:
         if content['message']['subset'][0]['general']['information']['date'] == '1-2-2021':
             if content['message']['subset'][0]['general']['information']['version'] == '3.00':
