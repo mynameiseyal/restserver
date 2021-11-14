@@ -53,8 +53,9 @@ def process_responses():
     :return: Correct if right, Incorrect if not
     """
     content = request.get_json()
+    parsed = json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
     print(content)
-    if content['serial'] == 3:
+    if parsed.serial == 3:
         if content['message']['subset'][0]['general']['information']['date'] == '1-2-2021':
             if content['message']['subset'][0]['general']['information']['version'] == '3.00':
                 if content['message']['subset'][0]['general']['quantities']['first'] == '203.70':
