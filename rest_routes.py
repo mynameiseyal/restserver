@@ -52,8 +52,7 @@ def process_responses():
                     "serial": 3}
     :return: Correct if right, Incorrect if not
     """
-    content = request.json()
-
+    content = request.get_json()
     parsed = json.loads(json.dumps(content), object_hook=lambda d: SimpleNamespace(**d))
     print(content)
     print(parsed)
