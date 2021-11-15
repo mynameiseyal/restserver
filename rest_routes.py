@@ -58,15 +58,14 @@ def process_responses():
     print(content)
     print(parsed)
     if parsed.serial == 3:
-        if content['message']['subset']['general']['information']['date'] == '1-2-2021':
-            if content['message']['subset']['general']['information']['version'] == '3.00':
-                if content['message']['subset']['general']['quantities']['first'] == '203.70':
-                    if content['message']['subset']['general']['quantities']['second'] == '104.4':
-                        if content['message']['subset']['general']['quantities']['third'] == '150':
+        if parsed.message.subset.general.information.date == '1-2-2021':
+            if parsed.message.subset.general.information.version == '3.00':
+                if parsed.message.subset.general.quantities.first == '203.70':
+                    if parsed.message.subset.general.quantities.second == '104.4':
+                        if parsed.message.subset.general.quantities.third == '150':
                             return "Correct"
                         else:
                             return "Incorrect"
-
 
     # if parsed.serial == 3:
     #     if content['message']['subset'][0]['general']['information']['date'] == '1-2-2021':
