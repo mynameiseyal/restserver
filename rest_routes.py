@@ -61,5 +61,5 @@ def process_responses():
                     if parsed.message.subset.general.quantities.second == '104.4':
                         if parsed.message.subset.general.quantities.third == '150':
                             return "Correct"
-                        else:
-                            return "Incorrect"
+    else:
+        return "Incorrect"
