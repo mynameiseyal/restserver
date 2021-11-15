@@ -54,12 +54,12 @@ def process_responses():
     """
     content = request.get_json()
     parsed = json.loads(json.dumps(content), object_hook=lambda d: SimpleNamespace(**d))
-    if parsed.serial == 3:
-        if parsed.message.subset.general.information.date == '1-2-2021':
-            if parsed.message.subset.general.information.version == '3.00':
-                if parsed.message.subset.general.quantities.first == '203.70':
-                    if parsed.message.subset.general.quantities.second == '104.4':
-                        if parsed.message.subset.general.quantities.third == '150':
-                            return "Correct"
+    if parsed.serial == 3 and\
+            parsed.message.subset.general.information.date == '1-2-2021' and\
+            parsed.message.subset.general.information.version == '3.00' and\
+            parsed.message.subset.general.quantities.first == '203.70' and\
+            parsed.message.subset.general.quantities.second == '104.4' and \
+            parsed.message.subset.general.quantities.third == '150':
+        return "Correct"
     else:
         return "Incorrect"
