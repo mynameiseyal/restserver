@@ -54,7 +54,7 @@ def process_responses():
     """
     content = request.json()
 
-    parsed = json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
+    parsed = json.loads(json.dumps(content), object_hook=lambda d: SimpleNamespace(**d))
     print(content)
     print(parsed)
     if parsed.serial == 3:
