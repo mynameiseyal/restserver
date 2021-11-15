@@ -53,7 +53,7 @@ def process_responses():
     :return: Correct if right, Incorrect if not
     """
     content = request.get_json()
-    parsed = json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
+    parsed = json.loads(json.dumps(content), object_hook=lambda d: SimpleNamespace(**d))
     # parsed = json.loads(payload3, object_hook=lambda d: SimpleNamespace(**d))
     print(content)
     print(parsed)
