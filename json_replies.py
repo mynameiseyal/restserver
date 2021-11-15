@@ -1,7 +1,7 @@
 responses = [
     {
         "message": {
-            "subset": [
+            "subset":
                 {
                     "general": {
                         "information": {
@@ -15,13 +15,12 @@ responses = [
                         }
                     }
                 }
-            ]
         },
         "serial": 1
     },
     {
         "message": {
-            "subset": [
+            "subset":
                 {
                     "general": {
                         "information": {
@@ -35,7 +34,6 @@ responses = [
                         }
                     }
                 }
-            ]
         },
         "serial": 2
     }

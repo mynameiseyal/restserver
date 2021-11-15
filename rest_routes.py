@@ -46,17 +46,14 @@ def api_id():
 def process_responses():
     """
     Gets a rest API call containing a JSON.
-    Expected JSON: {"message": {"subset":[{"general":{
+    Expected JSON: {"message": {"subset":{"general":{
                     "information": {"date": "1-2-2021","version": "3.00"},
-                    "quantities": {"first": "203.70","second": "104.4","third": "150"}}}]},
+                    "quantities": {"first": "203.70","second": "104.4","third": "150"}}}},
                     "serial": 3}
     :return: Correct if right, Incorrect if not
     """
     content = request.get_json()
     parsed = json.loads(json.dumps(content), object_hook=lambda d: SimpleNamespace(**d))
-    # parsed = json.loads(payload3, object_hook=lambda d: SimpleNamespace(**d))
-    print(content)
-    print(parsed)
     if parsed.serial == 3:
         if parsed.message.subset.general.information.date == '1-2-2021':
             if parsed.message.subset.general.information.version == '3.00':
@@ -66,13 +63,3 @@ def process_responses():
                             return "Correct"
                         else:
                             return "Incorrect"
-
-    # if parsed.serial == 3:
-    #     if content['message']['subset'][0]['general']['information']['date'] == '1-2-2021':
-    #         if content['message']['subset'][0]['general']['information']['version'] == '3.00':
-    #             if content['message']['subset'][0]['general']['quantities']['first'] == '203.70':
-    #                 if content['message']['subset'][0]['general']['quantities']['second'] == '104.4':
-    #                     if content['message']['subset'][0]['general']['quantities']['third'] == '150':
-    #                         return "Correct"
-    #                     else:
-    #                         return "Incorrect"
