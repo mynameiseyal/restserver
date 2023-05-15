@@ -1,4 +1,5 @@
 import json
+import time
 from types import SimpleNamespace
 
 from flask import Flask, request, jsonify
@@ -63,3 +64,14 @@ def process_responses():
         return "Correct"
     else:
         return "Incorrect"
+
+
+@app.route('/RestServer/sleep', methods=['GET', 'POST'])
+def sleep():
+    """
+    Provides a timeout according to a seconds value
+    Exmaple: /sleep?sleep_time=10
+    """
+    sleep_time = request.args.get('sleep_time')
+    time.sleep(int(sleep_time))
+    return '', 200

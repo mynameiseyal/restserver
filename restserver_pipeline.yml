@@ -1,0 +1,98 @@
+parameters:
+  - name: vm_to_use
+    type: string
+    default: 2
+
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include:
+      - main
+
+stages:
+  - stage: Start_vms
+    jobs:
+      - template: pipeline_templates/start_stop_agents.yml
+        parameters:
+          action: 'start'
+          vm_nums:
+            - AU-AZ-QA${{ parameters.vm_to_use }}
+
+  - stage: TestRun
+    dependsOn:
+      - Start_vms
+    condition: in(dependencies.Start_vms.result, 'Succeeded')
+    jobs:
+      - job: Test_BOS
+        cancelTimeoutInMinutes: 1
+        pool:
+          name: QA-TestExec
+          demands:
+            - Agent.Name -equals a${{ parameters.vm_to_use }}
+        steps:
+          - task: PipAuthenticate@1
+            inputs:
+              artifactFeeds: 'Au10tix/automation_infra'
+          - script: |
+              "C:\Program Files\Python37\python.exe" -m venv venv
+              venv\Scripts\python -m pip install -U --upgrade pip
+              venv\Scripts\python -m pip install -r bos_sanity/requirements.txt
+              venv\Scripts\python -m pip install automation_infra==${{ parameters.infra }} --force-reinstall
+            displayName: 'Prepare venv'
+          - script: |
+              echo bos
+              setx AZURE_CLIENT_ID "18682098-8cb1-4278-b6f7-6d17769d8932" /M && setx AZURE_TENANT_ID "63951129-8e3e-496a-bf4c-2d98507a3d13" /M && setx AZURE_CLIENT_SECRET "$(azure_client_secret)" /M && setx AZURE_SUBSCRIPTION_ID "f0d8fd55-4df8-4c78-8ac5-1f4b8dcc3538" /M
+              del /q Z:\allure-reports\bos\latest\*
+              venv\Scripts\python.exe -m pytest -s -v bos_sanity/test_bos_sanity.py --env=${{ parameters.environment }}  --junitxml=junit/test-results.xml --alluredir=Z:\allure-reports\bos\latest
+            displayName: 'BOS sanity'
+
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFiles: '**/test-*.xml'
+              testRunTitle: 'Publish test results for $(System.JobName)'
+
+
+      - job: Generate_Report
+        cancelTimeoutInMinutes: 1
+        dependsOn:
+          - Test_BOS
+        condition: and(in(dependencies.Test_BOS.result, 'Succeeded', 'Skipped', 'Failed'), eq( '${{ parameters.Generate_report }}' , true))
+        pool:
+          name: QA-TestReport
+
+        steps:
+          - script: |
+              echo generate allure of per build
+              echo $(Build.BuildNumber)
+              Xcopy Z:\allure-reports\bos\latest Z:\allure-reports\bos\$(Build.BuildNumber) /i /e /y /z
+              Xcopy C:\inetpub\wwwroot\Allure\latest_build\history Z:\allure-reports\bos\$(Build.BuildNumber)\history /i /e /y /z
+              C:\Allure\allure-2.18.1\bin\allure generate Z:\allure-reports\bos\$(Build.BuildNumber) -o C:\inetpub\wwwroot\Allure\$(Build.BuildNumber)
+            displayName: 'Generate allure reports in job tab'
+          - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+            - script: |
+                echo generate allure latest
+                del /q Z:\allure-reports\latest_build\history\*
+                Xcopy C:\inetpub\wwwroot\Allure\latest_build\history Z:\allure-reports\latest_build\history  /i /e /y /z
+                C:\Allure\allure-2.18.1\bin\allure generate Z:\allure-reports\bos\latest ^
+                Z:\allure-reports\e2e_mobile\latest ^
+                Z:\allure-reports\e2e\latest ^
+                Z:\allure-reports\instinct\latest ^
+                Z:\allure-reports\ipservices_sanity\latest ^
+                Z:\allure-reports\sdc\latest ^
+                Z:\allure-reports\sdc_over_secure_me\latest ^
+                Z:\allure-reports\latest_build --clean -o C:\inetpub\wwwroot\Allure\latest_build
+              displayName: 'Generate allure reports'
+
+  - stage: Stop_vms
+    dependsOn:
+      - TestRun
+      - Start_vms
+    condition: and(in(dependencies.TestRun.result, 'Succeeded', 'Skipped', 'Failed'), in(dependencies.Start_vms.result, 'Succeeded', 'Failed'))
+    jobs:
+      - template: pipeline_templates/start_stop_agents.yml
+        parameters:
+          action: 'stop'
+          vm_nums:
+            - AU-AZ-QA${{ parameters.vm_to_use }}
